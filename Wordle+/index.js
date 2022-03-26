@@ -3,12 +3,19 @@ const http = require('http');
 const hostname = 'localhost';
 const port = 8080;
 
-const server = http.createServer((req, res) => {
+function myServer(req, res)  {
   let query1=req.url.split("q=")[1];
   console.log(query1);
   let query=query1;
   let answer="CIGAR";
   let ans="";
+
+  if (query==null)
+  {
+    ans="undefined";
+  }
+  else
+  {
   for(var i=0;i<5;i++)
   {
     let flag=0;
@@ -40,12 +47,18 @@ const server = http.createServer((req, res) => {
   }
      
   }
+}
   console.log(ans);
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
   res.end(ans);
-});
+}
 
-server.listen(port, hostname, () => {
-      console.log(`Server running at http://${hostname}:${port}/?q=CRANE`);
-});
+const server = http.createServer(myServer);
+
+function callBack() {
+  console.log(`Server running at http://${hostname}:${port}/`);
+}
+
+
+server.listen(port, hostname, callBack);
