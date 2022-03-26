@@ -1,16 +1,51 @@
-const http = require("http");
+const http = require('http');
 
-const SECRET = "CIGAR"; // You can set any word as the secret answer
+const hostname = 'localhost';
+const port = 8080;
 
-function myFunction(req, res) {
-	// console.log({req}); // You can uncomment this to see the request object
-	console.log(req.url);
+const server = http.createServer((req, res) => {
+  let query1=req.url.split("q=")[1];
+  console.log(query1);
+  let query=query1;
+  let answer="CIGAR";
+  let ans="";
+  for(var i=0;i<5;i++)
+  {
+    let flag=0;
+    for(var j=0;j<5;j++)
+    {
+      if(query[j]==answer[i] && i==j)
+      {
+        flag=1;
+        break;
+      }
+      if(query[j]==answer[i])
+      {
+        flag=2;
+        break;
+      }
+      
+    }
+  if(flag==0)
+  {
+    ans+="r";
+  }
+  else if(flag==1)
+  {
+    ans+="g";
+  }
+  else
+  {
+    ans+="y";
+  }
+     
+  }
+  console.log(ans);
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/plain');
+  res.end(ans);
+});
 
-	const GUESS = ""; // Write logic to parse the word which the user guessed from the URL string
-	const feedback = ""; // Write logic to compare the word with the secret, and generate the feedback string
-
-	res.write(feedback);
-	res.end();
-}
-
-http.createServer(myFunction).listen(8080);
+server.listen(port, hostname, () => {
+      console.log(`Server running at http://${hostname}:${port}/?q=CRANE`);
+});
